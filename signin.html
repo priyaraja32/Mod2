@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign In</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+   <div class="form-container signin-container"> 
+    <h2>Sign in</h2>
+
+    <form id="signinForm" novalidate>
+      <div>
+        <input type="email" id="signinEmail" placeholder="Email" required />
+        <div class="error" id="signinEmailError"></div>
+      </div>
+      <div class="position-relative">
+        <input type="password" id="signinPassword" placeholder="Password" required />
+        <span class="toggle-password" onclick="togglePassword('signinPassword')">Show</span>
+        <div class="error" id="signinPasswordError"></div>
+      </div>
+      <div class="forgot-password">Forgot your password?</div>
+      <button type="submit">SIGN IN</button>
+    </form>
+  </div>
+
+  <div class="signup-panel">
+    <h1>Hello, Friend!</h1>
+    <p>Enter your personal details and start journey with us</p>
+    <button id="goToSignup">SIGN UP</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  document.getElementById('goToSignup').addEventListener('click', () => {
+    window.location.href = 'signup.html';
+  });
+</script>
+</body>
+</html>

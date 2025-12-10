@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+  <div class="signup-panel" style="flex:1; border-radius: 10px 0 0 10px; color: white; background: linear-gradient(to right, #ff416c, #ff4b2b); padding: 50px 40px; text-align: center;">
+    <h1>Welcome Back!</h1>
+    <p>To keep connected with us please login with your personal info</p>
+    <button id="goToSignin" style="width: 120px; border: 1.8px solid white; background: transparent; color: white; font-weight: 700; border-radius: 25px; padding: 12px 0; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease;">SIGN IN</button>
+  </div>
+
+  <div class="form-container signin-container" style="flex:1; padding: 50px 30px;">
+    <h2>Create Account</h2>
+    <form id="signupForm" novalidate>
+      <input type="text" id="fullname" placeholder="Full Name" required />
+      <div class="error" id="fullnameError"></div>
+
+      <input type="email" id="email" placeholder="Email" required />
+      <div class="error" id="emailError"></div>
+
+      <input type="tel" id="phone" placeholder="Phone Number" required maxlength="10" />
+      <div class="error" id="phoneError"></div>
+
+      <input type="text" id="city" placeholder="Location / City" required />
+      <div class="error" id="cityError"></div>
+
+      <div class="position-relative">
+        <input type="password" id="password" placeholder="Password" required />
+        <span class="toggle-password" onclick="togglePassword('password')">Show</span>
+        <div class="error" id="passwordError"></div>
+      </div>
+
+      <div class="position-relative">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+        <span class="toggle-password" onclick="togglePassword('confirmPassword')">Show</span>
+        <div class="error" id="confirmPasswordError"></div>
+      </div>
+
+      <button type="submit">SIGN UP</button>
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  document.getElementById('goToSignin').addEventListener('click', () => {
+    window.location.href = 'signin.html';
+  });
+</script>
+</body>
+</html>
