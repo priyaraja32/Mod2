@@ -3,14 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tourist Landing Page</title>
+<title>Tourist App</title>
+
 <style>
   body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+  }
+
+  /* Common Container */
+  .page {
+    display: none;
+  }
+  .active {
+    display: block;
+  }
+
+  /* Landing Page Style */
+  .landing-bg {
     background: linear-gradient(135deg, #ff416c, #ff4b2b);
     color: white;
-    font-family: 'Poppins', sans-serif;
     height: 100vh;
-    margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -26,18 +39,230 @@
   }
   h1 {
     font-weight: 700;
-    font-size: 2.5rem;
-    margin-bottom: 15px;
+    font-size: 2rem;
   }
-  p {
-    font-size: 1.2rem;
+
+  /* Signin + Signup Styles */
+  .container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .form-container {
+    background: white;
+    padding: 40px 30px;
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  .error {
+    color: red;
+    font-size: 12px;
+    text-align: left;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #ff416c;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover {
+    opacity: 0.9;
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 34px;
+    cursor: pointer;
+    color: #ff416c;
+  }
+  .position-relative {
+    position: relative;
+  }
+
+  .signup-panel {
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+    padding: 40px 30px;
+    border-radius: 10px;
+    margin-left: 20px;
+    color: white;
+    width: 300px;
+    text-align: center;
+  }
+  .signup-panel button {
+    background: transparent;
+    border: 2px solid white;
   }
 </style>
 </head>
+
 <body>
-  <div class="content">
-    <h1>Welcome to the Tourist Landing Page!</h1>
-    <p>You have successfully signed in.</p>
+
+<!-- SIGN IN PAGE -->
+<div id="signinPage" class="page active">
+  <div class="container">
+    <div class="form-container">
+      <h2>Sign In</h2>
+
+      <form id="signinForm">
+        <input type="email" id="signinEmail" placeholder="Email" required />
+        <div class="error" id="signinEmailError"></div>
+
+        <div class="position-relative">
+          <input type="password" id="signinPassword" placeholder="Password" required />
+          <span class="toggle-password" onclick="togglePassword('signinPassword')">Show</span>
+          <div class="error" id="signinPasswordError"></div>
+        </div>
+
+        <button type="submit">SIGN IN</button>
+      </form>
+    </div>
+
+    <div class="signup-panel">
+      <h1>Hello, Friend!</h1>
+      <p>Enter your personal details<br>and start journey with us</p>
+      <button onclick="showPage('signupPage')">SIGN UP</button>
+    </div>
   </div>
+</div>
+
+<!-- SIGN UP PAGE -->
+<div id="signupPage" class="page">
+  <div class="container">
+    <div class="signup-panel">
+      <h1>Welcome Back!</h1>
+      <p>To keep connected with us<br>please login with your personal info</p>
+      <button onclick="showPage('signinPage')">SIGN IN</button>
+    </div>
+
+    <div class="form-container">
+      <h2>Create Account</h2>
+
+      <form id="signupForm">
+        <input type="text" id="fullname" placeholder="Full Name" required />
+        <div class="error" id="fullnameError"></div>
+
+        <input type="email" id="email" placeholder="Email" required />
+        <div class="error" id="emailError"></div>
+
+        <input type="tel" id="phone" placeholder="Phone Number" maxlength="10" required />
+        <div class="error" id="phoneError"></div>
+
+        <input type="text" id="city" placeholder="Location / City" required />
+        <div class="error" id="cityError"></div>
+
+        <div class="position-relative">
+          <input type="password" id="password" placeholder="Password" required />
+          <span class="toggle-password" onclick="togglePassword('password')">Show</span>
+          <div class="error" id="passwordError"></div>
+        </div>
+
+        <div class="position-relative">
+          <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+          <span class="toggle-password" onclick="togglePassword('confirmPassword')">Show</span>
+          <div class="error" id="confirmPasswordError"></div>
+        </div>
+
+        <button type="submit">SIGN UP</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- LANDING PAGE -->
+<div id="landingPage" class="page">
+  <div class="landing-bg">
+    <div class="content">
+      <h1>Welcome to the Tourist Landing Page!</h1>
+      <p>You have successfully signed in.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+// Show/Hide Pages
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+}
+
+//  password visibility
+function togglePassword(id) {
+  const field = document.getElementById(id);
+  field.type = field.type === "password" ? "text" : "password";
+}
+
+// Signin Form
+document.getElementById("signinForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  let email = document.getElementById("signinEmail");
+  let pass = document.getElementById("signinPassword");
+
+  let valid = true;
+
+  if (email.value === "") {
+    document.getElementById("signinEmailError").textContent = "Email required";
+    valid = false;
+  } else document.getElementById("signinEmailError").textContent = "";
+
+  if (pass.value === "") {
+    document.getElementById("signinPasswordError").textContent = "Password required";
+    valid = false;
+  } else document.getElementById("signinPasswordError").textContent = "";
+
+  if (valid) {
+    showPage("landingPage");
+  }
+});
+
+// Signup Form
+document.getElementById("signupForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  let name = document.getElementById("fullname").value.trim();
+  let email = document.getElementById("email").value.trim();
+  let phone = document.getElementById("phone").value.trim();
+  let city = document.getElementById("city").value.trim();
+  let pass = document.getElementById("password").value;
+  let cpass = document.getElementById("confirmPassword").value;
+
+  let valid = true;
+
+  document.getElementById("fullnameError").textContent = name ? "" : "Full name required";
+  document.getElementById("emailError").textContent = email ? "" : "Email required";
+  document.getElementById("phoneError").textContent = phone.length === 10 ? "" : "Enter 10-digit phone";
+  document.getElementById("cityError").textContent = city ? "" : "City required";
+  document.getElementById("passwordError").textContent = pass.length >= 6 ? "" : "Min 6 characters";
+  document.getElementById("confirmPasswordError").textContent = pass === cpass ? "" : "Passwords do not match";
+
+  if (!name || !email || phone.length !== 10 || !city || pass.length < 6 || pass !== cpass) {
+    valid = false;
+  }
+
+  if (valid) {
+    alert("Account created! You can now sign in.");
+    showPage("signinPage");
+  }
+});
+</script>
+
 </body>
 </html>
+
