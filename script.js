@@ -1,17 +1,17 @@
 
-function togglePassword(id) {
-  const input = document.getElementById(id);
-  const toggle = input.nextElementSibling;
-  if (input.type === "password") {
-    input.type = "text";
-    toggle.textContent = "Hide";
-  } else {
-    input.type = "password";
-    toggle.textContent = "Show";
-  }
+// ================= PAGE SWITCH =================
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
 }
 
-// Signup validation
+// ================= PASSWORD TOGGLE =================
+function togglePassword(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === "password" ? "text" : "password";
+}
+
+// ================= SIGNUP VALIDATION =================
 function validateSignupForm() {
   let valid = true;
 
@@ -25,109 +25,101 @@ function validateSignupForm() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\d{10}$/;
   const cityRegex = /^[A-Za-z\s]+$/;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
   // Clear errors
-  ['fullnameError','emailError','phoneError','cityError','passwordError','confirmPasswordError'].forEach(id => {
-    document.getElementById(id).textContent = '';
-  });
+  ['fullnameError','emailError','phoneError','cityError','passwordError','confirmPasswordError']
+    .forEach(id => document.getElementById(id).textContent = '');
 
   if (!fullname) {
-    document.getElementById('fullnameError').textContent = 'Full Name is required.';
+    document.getElementById('fullnameError').textContent = 'Full name required';
     valid = false;
   }
+
   if (!emailRegex.test(email)) {
-    document.getElementById('emailError').textContent = 'Enter a valid email.';
+    document.getElementById('emailError').textContent = 'Invalid email';
     valid = false;
   }
+
   if (!phoneRegex.test(phone)) {
-    document.getElementById('phoneError').textContent = 'Phone must be 10 digits.';
+    document.getElementById('phoneError').textContent = 'Enter 10-digit phone number';
     valid = false;
   }
+
   if (!cityRegex.test(city)) {
-    document.getElementById('cityError').textContent = 'City must contain only letters.';
+    document.getElementById('cityError').textContent = 'City must contain letters only';
     valid = false;
   }
+
   if (!passwordRegex.test(password)) {
-    document.getElementById('passwordError').textContent = 'Password must be 8+ chars with letters and numbers.';
+    document.getElementById('passwordError').textContent =
+      'Password must be 8+ characters with letters & numbers';
     valid = false;
   }
+
   if (password !== confirmPassword) {
-    document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+    document.getElementById('confirmPasswordError').textContent =
+      'Passwords do not match';
     valid = false;
   }
 
   return valid;
 }
 
-// Signin validation
-function validateSigninForm() {
-  let valid = true;
+// ================= SIGNUP SUBMIT =================
+document.getElementById('signupForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  if (validateSignupForm()) {
+
+    const user = {
+      fullname: document.getElementById('fullname').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      city: document.getElementById('city').value.trim(),
+      password: document.getElementById('password').value
+    };
+
+    localStorage.setItem('registeredUser', JSON.stringify(user));
+    alert('Registration successful! Please sign in.');
+    showPage('signinPage');
+  }
+});
+
+// ================= SIGNIN SUBMIT =================
+document.getElementById('signinForm').addEventListener('submit', function(e) {
+  e.preventDefault();
 
   const email = document.getElementById('signinEmail').value.trim();
   const password = document.getElementById('signinPassword').value;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
   document.getElementById('signinEmailError').textContent = '';
   document.getElementById('signinPasswordError').textContent = '';
 
-  if (!emailRegex.test(email)) {
-    document.getElementById('signinEmailError').textContent = 'Enter a valid email.';
-    valid = false;
+  if (!email) {
+    document.getElementById('signinEmailError').textContent = 'Email required';
+    return;
   }
+
   if (!password) {
-    document.getElementById('signinPasswordError').textContent = 'Password is required.';
-    valid = false;
+    document.getElementById('signinPasswordError').textContent = 'Password required';
+    return;
   }
 
-  return valid;
-}
+  const storedUser = JSON.parse(localStorage.getItem('registeredUser'));
 
-// Signup form submission
-const signupForm = document.getElementById('signupForm');
-if (signupForm) {
-  signupForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+  if (!storedUser) {
+    alert('No user found. Please sign up.');
+    showPage('signupPage');
+    return;
+  }
 
-    if (validateSignupForm()) {
-      const user = {
-        fullname: document.getElementById('fullname').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        city: document.getElementById('city').value.trim(),
-        password: document.getElementById('password').value
-      };
-      localStorage.setItem('registeredUser', JSON.stringify(user));
-      alert('Registration successful! Please sign in.');
-      window.location.href = 'signin.html';
-    }
-  });
-}
+  if (storedUser.email === email && storedUser.password === password) {
+    showPage('landingPage');
+  } else {
+    alert('Invalid email or password');
+  }
+});
 
-// Signin form submission
-const signinForm = document.getElementById('signinForm');
-if (signinForm) {
-  signinForm.addEventListener('submit', (e) => {
-    e.preventDefault();
 
-    if (validateSigninForm()) {
-      const email = document.getElementById('signinEmail').value.trim();
-      const password = document.getElementById('signinPassword').value;
 
-      const storedUserStr = localStorage.getItem('registeredUser');
-      if (!storedUserStr) {
-        alert('No registered user found. Please sign up.');
-        window.location.href = 'signup.html';
-        return;
-      }
-      const storedUser = JSON.parse(storedUserStr);
-
-      if (storedUser.email === email && storedUser.password === password) {
-        window.location.href = 'tourist.html';
-      } else {
-        alert('Invalid email or password.');
-      }
-    }
-  });
-}
