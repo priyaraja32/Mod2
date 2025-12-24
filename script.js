@@ -1,17 +1,17 @@
 
-// ================= PAGE SWITCH =================
+//  PAGE SWITCH 
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
 }
 
-// ================= PASSWORD TOGGLE =================
+// PASSWORD TOGGLE
 function togglePassword(id) {
   const input = document.getElementById(id);
   input.type = input.type === "password" ? "text" : "password";
 }
 
-// ================= SIGNUP VALIDATION =================
+//  SIGNUP VALIDATION 
 function validateSignupForm() {
   let valid = true;
 
@@ -66,7 +66,7 @@ function validateSignupForm() {
   return valid;
 }
 
-// ================= SIGNUP SUBMIT =================
+//  SIGNUP SUBMIT 
 document.getElementById('signupForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -86,7 +86,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
   }
 });
 
-// ================= SIGNIN SUBMIT =================
+//  SIGNIN SUBMIT 
 document.getElementById('signinForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
